@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Timer</title>
+    <style>
+        html, body {
+            height: 100%;
+            
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 4vh;
+            background-image: url(/calm\ image.jpeg);
+            background-repeat: no-repeat;
+            background-size: cover; 
+            color: #FFFFFF;
+            display: grid;
+            box-sizing: border-box;
+            justify-content: center;
+}
+        #timer_display {
+            margin-bottom: 4vh;
+            text-align: center;
+           
+        }
+        #timer_display_duration {
+            font-size: 20vmin;
+            margin-bottom: 0vh;
+            margin-left: 36vh;
+        }
+        #timer_display_name {
+            font-size: 15vmin;
+            margin-left: 10vh;
+            padding-bottom: 0%;
+
+        }
+        #timer_button_container {
+            padding-top: 0%;
+            margin-bottom: 0vh;
+            text-align: center;
+        }
+        .timer-button {
+            background-color: rgb(123, 154, 191);
+            color:black;
+            border: 0;
+            font-size: 10vmin;
+            padding: 0.25em 1em;
+            margin-right: 2em;
+            margin-left: 16vh;
+
+        }
+        .timer-input {
+            width: calc(33.33% - 8px);
+            padding: 0.5em;
+            font-size: 1em;
+            margin-right: 8px;
+            box-sizing: border-box;
+            background-color: white;
+        }
+        .timer-input:last-child {
+            margin-right: 0;
+        }
+        .timer-input-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer_container">
+        <div class="timer-input-container">
+            <input type="number" id="hours" class="timer-input" placeholder="Hours">
+            <input type="number" id="minutes" class="timer-input" placeholder="Minutes">
+        </div>
+        <h1 id="timer_display_name">Class Break Timer</h1>
+        <p id="timer_display_duration">00:00:00</p>
+        <button id="start_button" class="timer-button">Start</button>
+        <button id="stop_button" class="timer-button">Stop</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timerDisplayDuration = document.getElementById('timer_display_duration');
+            const hoursInput = document.getElementById('hours');
+            const minutesInput = document.getElementById('minutes');
+            const startButton = document.getElementById('start_button');
+            const stopButton = document.getElementById('stop_button');
+
+            let countdownInterval;
+            let durationInSeconds;
+
+            function startCountdown() {
+                let hours = parseInt(hoursInput.value) || 0;
+                let minutes = parseInt(minutesInput.value) || 0;
+                durationInSeconds = hours * 3600 + minutes * 60;
+
+                if (durationInSeconds > 0) {
+                    countdownInterval = setInterval(updateCountdown, 1000);
+                } else {
+                    alert('Please enter a valid countdown time.');
+                }
+            }
+
+            function stopCountdown() {
+                clearInterval(countdownInterval);
+            }
+
+            function updateCountdown() {
+                if (durationInSeconds > 0) {
+                    durationInSeconds--;
+                    timerDisplayDuration.textContent = formatDuration(durationInSeconds);
+                } else {
+                    clearInterval(countdownInterval);
+                    timerDisplayDuration.textContent = "00:00:00"; // Optional: Display timer completion message
+                }
+            }
+
+            function formatDuration(duration_in_seconds) {
+                let hours = Math.floor(duration_in_seconds / 3600);
+                let minutes = Math.floor((duration_in_seconds % 3600) / 60);
+                let seconds = duration_in_seconds % 60;
+
+                let formattedHours = hours < 10 ? "0" + hours : hours;
+                let formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+                let formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
+
+                return formattedHours + ":" + formattedMinutes + ":" + formattedSeconds;
+            }
+
+            startButton.addEventListener('click', function() {
+                startCountdown();
+            });
+
+            stopButton.addEventListener('click', function() {
+                stopCountdown();
+            });
+        });
+    </script>
+</body>
+</html>
